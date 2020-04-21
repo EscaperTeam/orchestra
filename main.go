@@ -7,10 +7,10 @@ import (
 	"path/filepath"
 
 	log "github.com/cihub/seelog"
+	"github.com/reyahsolutions/orchestra/commands"
+	"github.com/reyahsolutions/orchestra/config"
+	"github.com/reyahsolutions/orchestra/services"
 	"github.com/urfave/cli"
-	"github.com/monzo/orchestra/commands"
-	"github.com/monzo/orchestra/config"
-	"github.com/monzo/orchestra/services"
 )
 
 var app *cli.App

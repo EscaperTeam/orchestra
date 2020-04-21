@@ -1,4 +1,4 @@
-Orchestra [![wercker status](https://app.wercker.com/status/16ba07e3d295feb5c3874207a9f3fe36/s "wercker status")](https://app.wercker.com/project/bykey/16ba07e3d295feb5c3874207a9f3fe36) [![GoDoc](https://godoc.org/github.com/vinceprignano/orchestra?status.svg)](https://godoc.org/github.com/vinceprignano/orchestra)
+Orchestra
 ======================================================
 Orchestra is a toolkit to manage a fleet of Go binaries/services. A unique place where you can run, stop, aggregate logs and config your Go binaries.
 
@@ -8,7 +8,7 @@ Orchestra is a toolkit to manage a fleet of Go binaries/services. A unique place
 
 Build & Install
 ---------------
-`go get -u github.com/monzo/orchestra`
+`go get -u github.com/reyahsolutions/orchestra`
 
 Start an Orchestra Project
 --------------------------
