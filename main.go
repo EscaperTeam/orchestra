@@ -7,7 +7,7 @@ import (
 	"path/filepath"
 
 	log "github.com/cihub/seelog"
-	"github.com/codegangsta/cli"
+	"github.com/urfave/cli"
 	"github.com/monzo/orchestra/commands"
 	"github.com/monzo/orchestra/config"
 	"github.com/monzo/orchestra/services"

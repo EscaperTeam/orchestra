@@ -7,7 +7,7 @@ import (
 	"runtime"
 	"strings"
 
-	"github.com/codegangsta/cli"
+	"github.com/urfave/cli"
 	"github.com/monzo/orchestra/services"
 	"github.com/wsxiaoys/terminal"
 )
