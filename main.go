@@ -23,36 +23,36 @@ func main() {
 	app.Name = "Orchestra"
 	app.Usage = "Orchestrate Go Services"
 	app.EnableBashCompletion = true
-	app.Commands = []cli.Command{
-		*commands.BuildCommand,
-		*commands.ExportCommand,
-		*commands.InstallCommand,
-		*commands.LogsCommand,
-		*commands.PsCommand,
-		*commands.RestartCommand,
-		*commands.StartCommand,
-		*commands.StopCommand,
-		*commands.TestCommand,
+	app.Commands = []*cli.Command{
+		commands.BuildCommand,
+		commands.ExportCommand,
+		commands.InstallCommand,
+		commands.LogsCommand,
+		commands.PsCommand,
+		commands.RestartCommand,
+		commands.StartCommand,
+		commands.StopCommand,
+		commands.TestCommand,
 	}
 	app.Flags = []cli.Flag{
-		cli.StringFlag{
-			Name:   "config, c",
-			Value:  "orchestra.yml",
-			Usage:  "Specify a different config file to use",
-			EnvVar: "ORCHESTRA_CONFIG",
+		&cli.StringFlag{
+			Name:    "config, c",
+			Value:   "orchestra.yml",
+			Usage:   "Specify a different config file to use",
+			EnvVars: []string{"ORCHESTRA_CONFIG"},
 		},
 	}
 	// init checks for an existing orchestra.yml in the current working directory
 	// and creates a new .orchestra directory (if doesn't exist)
 	app.Before = func(c *cli.Context) error {
-		confVal := c.GlobalString("config")
+		confVal := c.String("config")
 		if confVal == "" {
 			confVal = defaultConfigFile
 		}
 
 		config.ConfigPath, _ = filepath.Abs(confVal)
 		if _, err := os.Stat(config.ConfigPath); os.IsNotExist(err) {
-			fmt.Printf("No %s found. Have you specified the right directory?\n", c.GlobalString("config"))
+			fmt.Printf("No %s found. Have you specified the right directory?\n", c.String("config"))
 			os.Exit(1)
 		}
 		services.ProjectPath, _ = path.Split(config.ConfigPath)

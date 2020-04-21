@@ -21,11 +21,11 @@ var StartCommand = &cli.Command{
 	Action:       BeforeAfterWrapper(StartAction),
 	BashComplete: ServicesBashComplete,
 	Flags: []cli.Flag{
-		cli.BoolFlag{
+		&cli.BoolFlag{
 			Name:  "attach, a",
 			Usage: "Attach to services output after start",
 		},
-		cli.BoolFlag{
+		&cli.BoolFlag{
 			Name:  "logs, l",
 			Usage: "Start logging after start",
 		},

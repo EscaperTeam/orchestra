@@ -20,7 +20,7 @@ const niceness = "1"
 func FilterServices(c *cli.Context) map[string]*services.Service {
 	excludeMode := 0
 	args := c.Args()
-	for _, s := range args {
+	for _, s := range args.Slice() {
 		serv := s
 		if strings.HasPrefix(s, "~") {
 			serv = strings.Replace(s, "~", "", 1)
@@ -37,14 +37,14 @@ func FilterServices(c *cli.Context) map[string]*services.Service {
 			return nil
 		}
 	}
-	if math.Abs(float64(excludeMode)) != float64(len(args)) {
+	if math.Abs(float64(excludeMode)) != float64(args.Len()) {
 		log.Critical("You can't exclude and include services at the same time")
 		os.Exit(1)
 	}
 	if excludeMode < 0 {
 		for name := range services.Registry {
 			included := false
-			for _, s := range args {
+			for _, s := range args.Slice() {
 				if name == s {
 					included = true
 					break

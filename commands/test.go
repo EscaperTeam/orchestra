@@ -17,10 +17,10 @@ var TestCommand = &cli.Command{
 	Action:       BeforeAfterWrapper(TestAction),
 	BashComplete: ServicesBashComplete,
 	Flags: []cli.Flag{
-		cli.BoolFlag{
+		&cli.BoolFlag{
 			Name: "verbose, v",
 		},
-		cli.BoolFlag{
+		&cli.BoolFlag{
 			Name: "race, r",
 		},
 	},
