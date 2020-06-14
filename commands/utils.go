@@ -13,10 +13,6 @@ import (
 	"github.com/reyahsolutions/orchestra/services"
 )
 
-// niceness used for subprocesses
-// https://en.wikipedia.org/wiki/Nice_(Unix)
-const niceness = "1"
-
 // This is temporary, very very alpha and may change soon
 func FilterServices(c *cli.Context) map[string]*services.Service {
 	excludeMode := 0

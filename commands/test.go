@@ -3,12 +3,13 @@ package commands
 import (
 	"errors"
 	"os"
-	"os/exec"
 	"strings"
 
-	"github.com/reyahsolutions/orchestra/services"
 	"github.com/urfave/cli/v2"
 	"github.com/wsxiaoys/terminal"
+
+	"github.com/reyahsolutions/orchestra/commands/utils"
+	"github.com/reyahsolutions/orchestra/services"
 )
 
 var TestCommand = &cli.Command{
@@ -58,8 +59,7 @@ func testService(c *cli.Context, service *services.Service) (bool, error) {
 		cmdArgs = append(cmdArgs, "--race")
 	}
 	cmdArgs = append(cmdArgs, "./...")
-	cmdArgs = append([]string{"-n", niceness, "go"}, cmdArgs...)
-	cmd := exec.Command("nice", cmdArgs...)
+	cmd := utils.NiceExec("go", cmdArgs...)
 	cmd.Dir = service.Path
 	cmd.Stdout = os.Stdout
 	cmd.Stderr = os.Stderr

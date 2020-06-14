@@ -3,13 +3,13 @@ package commands
 import (
 	"bytes"
 	"fmt"
-	"os/exec"
 	"runtime"
 	"strings"
 
 	"github.com/urfave/cli/v2"
 	"github.com/wsxiaoys/terminal"
 
+	"github.com/reyahsolutions/orchestra/commands/utils"
 	"github.com/reyahsolutions/orchestra/services"
 )
 
@@ -39,7 +39,7 @@ func BuildAction(c *cli.Context) error {
 func buildService(c *cli.Context, service *services.Service) {
 	spacing := strings.Repeat(" ", services.MaxServiceNameLength+2-len(service.Name))
 
-	cmd := exec.Command("nice", "-n", niceness, "go", "build", "-v")
+	cmd := utils.NiceExec("go", "build", "-v")
 	cmd.Dir = service.Path
 	output := new(bytes.Buffer)
 	cmd.Stdout = output

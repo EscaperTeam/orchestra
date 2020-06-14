@@ -3,13 +3,14 @@ package commands
 import (
 	"bytes"
 	"fmt"
-	"os/exec"
 	"runtime"
 	"strings"
 
-	"github.com/reyahsolutions/orchestra/services"
 	"github.com/urfave/cli/v2"
 	"github.com/wsxiaoys/terminal"
+
+	"github.com/reyahsolutions/orchestra/commands/utils"
+	"github.com/reyahsolutions/orchestra/services"
 )
 
 var InstallCommand = &cli.Command{
@@ -45,7 +46,7 @@ func InstallAction(c *cli.Context) error {
 
 // installService runs go install in the service directory
 func installService(service *services.Service) (bool, error) {
-	cmd := exec.Command("nice", "-n", niceness, "go", "install", "-v")
+	cmd := utils.NiceExec("go", "install", "-v")
 	cmd.Dir = service.Path
 	output := bytes.NewBuffer([]byte{})
 	cmd.Stdout = output

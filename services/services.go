@@ -5,6 +5,7 @@ import (
 	"go/build"
 	"io/ioutil"
 	"os"
+	"path/filepath"
 	"sort"
 	"strconv"
 	"strings"
@@ -13,6 +14,8 @@ import (
 	"gopkg.in/yaml.v1"
 
 	log "github.com/cihub/seelog"
+
+	"github.com/reyahsolutions/orchestra/commands/utils"
 )
 
 var (
@@ -90,7 +93,7 @@ func (s *Service) IsRunning() bool {
 		proc, procErr := os.FindProcess(pid)
 		if procErr == nil {
 			sigError := proc.Signal(syscall.Signal(0))
-			if sigError == nil {
+			if sigError == nil || sigError.Error() == "not supported by windows" {
 				s.Process = proc
 				return true
 			} else {
@@ -107,18 +110,16 @@ func (s *Service) IsRunning() bool {
 // for the service.yml file. For every service it registers it after trying
 // to import the package using Go's build.Import package
 func DiscoverServices() {
-	gopath := strings.TrimRight(os.Getenv("GOPATH"), "/")
-	buildPath := strings.Replace(ProjectPath, gopath+"/src/", "", 1)
 	fd, _ := ioutil.ReadDir(ProjectPath)
 	for _, item := range fd {
 		serviceName := item.Name()
 		if item.IsDir() && !strings.HasPrefix(serviceName, ".") {
-			serviceConfigPath := fmt.Sprintf("%s/%s/service.yml", ProjectPath, serviceName)
+			serviceConfigPath := filepath.Join(ProjectPath, serviceName, "service.yml")
 			if _, err := os.Stat(serviceConfigPath); err == nil {
 				// Check for service.yml and try to import the package
-				pkg, err := build.Import(fmt.Sprintf("%s/%s", buildPath, serviceName), "srcDir", 0)
+				pkg, err := build.Import("./"+serviceName, ProjectPath, 0)
 				if err != nil {
-					log.Errorf("Error registering %s", item.Name())
+					log.Errorf("Error registering %s", serviceName)
 					log.Error(err.Error())
 					continue
 				}
@@ -129,10 +130,11 @@ func DiscoverServices() {
 					FileInfo:      item,
 					PackageInfo:   pkg,
 					OrchestraPath: OrchestraServicePath,
-					LogFilePath:   fmt.Sprintf("%s/%s.log", OrchestraServicePath, serviceName),
-					PidFilePath:   fmt.Sprintf("%s/%s.pid", OrchestraServicePath, serviceName),
+					LogFilePath:   filepath.Join(OrchestraServicePath, serviceName+".log"),
+					PidFilePath:   filepath.Join(OrchestraServicePath, serviceName+".pid"),
 					Color:         colors[len(Registry)%len(colors)],
-					Path:          fmt.Sprintf("%s/%s", ProjectPath, serviceName)}
+					Path:          filepath.Join(ProjectPath, serviceName),
+				}
 
 				// Parse env variable in configuration
 				var serviceConfig struct {
@@ -156,10 +158,11 @@ func DiscoverServices() {
 				}
 
 				if binPath := os.Getenv("GOBIN"); binPath != "" {
-					service.BinPath = fmt.Sprintf("%s/%s", binPath, serviceName)
+					service.BinPath = filepath.Join(binPath, serviceName)
 				} else {
-					service.BinPath = fmt.Sprintf("%s/bin/%s", os.Getenv("GOPATH"), serviceName)
+					service.BinPath = filepath.Join(os.Getenv("GOPATH"), "bin", serviceName)
 				}
+				service.BinPath += utils.Extension
 
 				// Add the service to the registry
 				Registry[serviceName] = service

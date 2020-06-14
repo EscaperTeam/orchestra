@@ -3,7 +3,6 @@ package main
 import (
 	"fmt"
 	"os"
-	"path"
 	"path/filepath"
 
 	log "github.com/cihub/seelog"
@@ -55,7 +54,7 @@ func main() {
 			fmt.Printf("No %s found. Have you specified the right directory?\n", c.String("config"))
 			os.Exit(1)
 		}
-		services.ProjectPath, _ = path.Split(config.ConfigPath)
+		services.ProjectPath = filepath.Dir(config.ConfigPath)
 		services.OrchestraServicePath = services.ProjectPath + ".orchestra"
 
 		if err := os.Mkdir(services.OrchestraServicePath, 0766); err != nil && os.IsNotExist(err) {
