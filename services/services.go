@@ -2,14 +2,13 @@ package services
 
 import (
 	"fmt"
+	"go/build"
 	"io/ioutil"
 	"os"
 	"sort"
 	"strconv"
 	"strings"
 	"syscall"
-
-	"go/build"
 
 	"gopkg.in/yaml.v1"
 
@@ -80,6 +79,7 @@ type Service struct {
 	PackageInfo *build.Package
 	Process     *os.Process
 	Env         []string
+	Args        []string
 	Ports       string
 }
 
@@ -136,7 +136,8 @@ func DiscoverServices() {
 
 				// Parse env variable in configuration
 				var serviceConfig struct {
-					Env map[string]string `env,omitempty`
+					Env  map[string]string `env,omitempty`
+					Args []string          `args,omitempty`
 				}
 				b, err := ioutil.ReadFile(serviceConfigPath)
 				if err != nil {
@@ -144,6 +145,7 @@ func DiscoverServices() {
 					os.Exit(1)
 				}
 				yaml.Unmarshal(b, &serviceConfig)
+				service.Args = serviceConfig.Args
 				for k, v := range serviceConfig.Env {
 					service.Env = append(service.Env, fmt.Sprintf("%s=%s", k, v))
 				}

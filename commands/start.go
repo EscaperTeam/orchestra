@@ -10,9 +10,10 @@ import (
 	"syscall"
 	"time"
 
-	"github.com/reyahsolutions/orchestra/services"
 	"github.com/urfave/cli"
 	"github.com/wsxiaoys/terminal"
+
+	"github.com/reyahsolutions/orchestra/services"
 )
 
 var StartCommand = &cli.Command{
@@ -94,6 +95,14 @@ func buildAndStart(c *cli.Context, service *services.Service) (bool, error) {
 	cmd.Stdout = outputFile
 	cmd.Stderr = outputFile
 	cmd.Env = GetEnvForService(c, service)
+	for _, arg := range service.Args {
+		populatedArg := arg
+		for _, envVar := range cmd.Env {
+			envVar := strings.Split(envVar, "=")
+			populatedArg = strings.ReplaceAll(populatedArg, fmt.Sprintf("${%s}", envVar[0]), strings.Join(envVar[1:], ""))
+		}
+		cmd.Args = append(cmd.Args, populatedArg)
+	}
 
 	if !c.Bool("attach") {
 		cmd.SysProcAttr = &syscall.SysProcAttr{Setpgid: true}
