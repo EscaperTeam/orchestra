@@ -7,9 +7,10 @@ import (
 	"strings"
 
 	log "github.com/cihub/seelog"
+	"github.com/urfave/cli/v2"
+
 	"github.com/reyahsolutions/orchestra/config"
 	"github.com/reyahsolutions/orchestra/services"
-	"github.com/urfave/cli"
 )
 
 // niceness used for subprocesses

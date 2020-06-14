@@ -9,7 +9,7 @@ import (
 	"strings"
 	"time"
 
-	"github.com/urfave/cli"
+	"github.com/urfave/cli/v2"
 	"github.com/wsxiaoys/terminal"
 
 	"github.com/reyahsolutions/orchestra/commands/start_command"

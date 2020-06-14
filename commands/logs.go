@@ -8,7 +8,7 @@ import (
 	log "github.com/cihub/seelog"
 	"github.com/hpcloud/tail"
 	"github.com/reyahsolutions/orchestra/services"
-	"github.com/urfave/cli"
+	"github.com/urfave/cli/v2"
 	"github.com/wsxiaoys/terminal"
 )
 

@@ -4,7 +4,7 @@ import (
 	"fmt"
 
 	"github.com/reyahsolutions/orchestra/config"
-	"github.com/urfave/cli"
+	"github.com/urfave/cli/v2"
 	"github.com/wsxiaoys/terminal"
 )
 

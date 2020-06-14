@@ -10,7 +10,7 @@ import (
 	"github.com/reyahsolutions/orchestra/commands"
 	"github.com/reyahsolutions/orchestra/config"
 	"github.com/reyahsolutions/orchestra/services"
-	"github.com/urfave/cli"
+	"github.com/urfave/cli/v2"
 )
 
 var app *cli.App
@@ -66,7 +66,7 @@ func main() {
 		services.Init()
 		return nil
 	}
-	app.Version = "0.4.0"
+	app.Version = "0.4"
 	app.Run(os.Args)
 	if commands.HasErrors() {
 		os.Exit(1)
