@@ -7,12 +7,12 @@ import (
 	"runtime"
 	"strconv"
 	"strings"
-	"syscall"
 	"time"
 
 	"github.com/urfave/cli"
 	"github.com/wsxiaoys/terminal"
 
+	"github.com/reyahsolutions/orchestra/commands/start_command"
 	"github.com/reyahsolutions/orchestra/services"
 )
 
@@ -24,7 +24,7 @@ var StartCommand = &cli.Command{
 	Flags: []cli.Flag{
 		&cli.BoolFlag{
 			Name:  "attach, a",
-			Usage: "Attach to services output after start",
+			Usage: "Attach to services output after start [DOES NOT WORK ON WINDOWS]",
 		},
 		&cli.BoolFlag{
 			Name:  "logs, l",
@@ -105,7 +105,7 @@ func buildAndStart(c *cli.Context, service *services.Service) (bool, error) {
 	}
 
 	if !c.Bool("attach") {
-		cmd.SysProcAttr = &syscall.SysProcAttr{Setpgid: true}
+		start_command.HookAttachArg(cmd)
 	}
 
 	if err := cmd.Start(); err != nil {

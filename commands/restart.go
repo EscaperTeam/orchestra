@@ -17,7 +17,7 @@ var RestartCommand = &cli.Command{
 	Flags: []cli.Flag{
 		&cli.BoolFlag{
 			Name:  "attach, a",
-			Usage: "Attach to services output after start",
+			Usage: "Attach to services output after start [DOES NOT WORK ON WINDOWS]",
 		},
 		&cli.BoolFlag{
 			Name:  "logs, l",
