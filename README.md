@@ -105,7 +105,7 @@ Autocomplete
 ------------
 Orchestra supports bash autocomplete.
 ```sh
-source $GOPATH/src/github.com/vinceprignano/orchestra/autocomplete/orchestra
+source $GOPATH/src/github.com/EscaperTeam/orchestra/autocomplete/orchestra
 ```
 
 Licensing
